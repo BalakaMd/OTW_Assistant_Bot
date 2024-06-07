@@ -93,3 +93,4 @@ celerybeat-schedule
 db.sqlite3
 
 .env
+api/.env

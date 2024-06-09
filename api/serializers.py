@@ -30,7 +30,7 @@ class AddDataSerializer(serializers.Serializer):
         response = requests.get(export_url)
         if response.status_code == 200:
             content = response.content.decode('utf-8')
-            document = create_document(content, metadata)
+            document = create_document(content, metadata, is_decorated=True)
             return document
         else:
             return [response.status_code]

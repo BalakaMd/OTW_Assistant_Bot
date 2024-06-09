@@ -37,3 +37,23 @@ class Contact(models.Model):
 
     def __str__(self):
         return f"Contact ID:{self.contact_id}, Contact Name: {self.contact_name}"
+
+
+class ModelSettings(models.Model):
+    MODEL_CHOICES = [
+        ('gpt-3.5-turbo', 'GPT-3.5-turbo',),
+        ('gpt-4o', 'GPT-4o'),
+        ('gpt-4-turbo', 'GPT-4'),
+    ]
+    settings_id = models.CharField(max_length=255, primary_key=True)
+    model_name = models.CharField(max_length=255, choices=MODEL_CHOICES, unique=True, default='gpt-3.5-turbo')
+    system_prompt = models.TextField()
+    number_of_chunks = models.IntegerField(default=5)
+    number_of_QA_history = models.IntegerField(default=5)
+    temperature = models.FloatField(default=0.5)
+
+    def __str__(self):
+        return "Settings for ID: " + self.settings_id
+
+    class Meta:
+        verbose_name_plural = 'LLM Settings'

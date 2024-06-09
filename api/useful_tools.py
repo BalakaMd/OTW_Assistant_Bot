@@ -1,6 +1,6 @@
 import re
 
-import dotenv
+import environ
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain.chains.retrieval import create_retrieval_chain
 from langchain_community.vectorstores import FAISS
@@ -9,21 +9,17 @@ from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_core.documents import Document
 
-from api.models import ChatsHistory
+from api.models import ChatsHistory, ModelSettings
 from api.db_templates import end_conference, start_conference
 
-dotenv.load_dotenv()
+env = environ.Env(
+    OPENAI_API_KEY=str
+)
 
 embeddings = OpenAIEmbeddings()
-llm = ChatOpenAI(model="gpt-3.5-turbo-0125")
-system_prompt = ("""You are an assistant for question-answering tasks. Use the following pieces of retrieved context and 
-chat history to answer the question. If you don't know the answer, just say that you don't know. Use timestamps and 
-quotes from context if necessary.. Answer in the language in which the question was asked.
-Context: {context}
-""")
 
 
-def add_data_to_faiss(document, chunk_size=2000, chunk_overlap=200, path="db/customers_contexts"):
+def add_data_to_faiss(document, chunk_size=500, chunk_overlap=100, path="db/customers_contexts"):
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap,
                                                    add_start_index=True)
     docs = text_splitter.split_documents(document)
@@ -57,16 +53,23 @@ def remove_data_from_faiss(data_id, metadata_tag="customer_id", path="db/custome
 
 
 def send_question_to_llm(question, chat_id, customer_id=None):
+    model_settings = ModelSettings.objects.get(settings_id=1)
+    system_prompt = model_settings.system_prompt
+    model_name = model_settings.model_name
+    model_temperature = model_settings.temperature
+    number_of_qa_history = model_settings.number_of_QA_history
+    number_of_chunks = model_settings.number_of_chunks
+
+    llm = ChatOpenAI(model=model_name, temperature=model_temperature, openai_api_key=env('OPENAI_API_KEY'))
+
     customer_vectorstore = FAISS.load_local("db/customers_contexts", embeddings,
                                             allow_dangerous_deserialization=True)
     contacts_vectorstore = FAISS.load_local("db/contacts", embeddings, allow_dangerous_deserialization=True)
     customer_vectorstore.merge_from(contacts_vectorstore)
 
+    search_kwargs = {"k": number_of_chunks, 'score_threshold': 0.6}
     if customer_id:
-        retriever = customer_vectorstore.as_retriever(search_type="similarity",
-                                             search_kwargs={"k": 6, "filter": {"customer_id": customer_id}})
-    else:
-        retriever = customer_vectorstore.as_retriever(search_type="similarity", search_kwargs={"k": 6})
+        search_kwargs["filter"] = {"customer_id": customer_id}
 
     chat_history = []
 
@@ -84,11 +87,13 @@ def send_question_to_llm(question, chat_id, customer_id=None):
         ]
     )
 
+    retriever = customer_vectorstore.as_retriever(query=question, search_type="similarity_score_threshold",
+                                                  search_kwargs=search_kwargs)
+
     question_answer_chain = create_stuff_documents_chain(llm, prompt)
     rag_chain = create_retrieval_chain(retriever, question_answer_chain)
-
     response = rag_chain.invoke({"input": question,
-                                 "chat_history": chat_history})
+                                 "chat_history": chat_history[-number_of_qa_history:]})
     answer = response["answer"]
 
     user_messages.messages.append({'human': question, 'assistant': answer})

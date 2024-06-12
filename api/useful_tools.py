@@ -1,3 +1,4 @@
+import os
 import re
 
 import environ
@@ -6,6 +7,11 @@ from langchain.chains.retrieval import create_retrieval_chain
 from langchain_community.vectorstores import FAISS
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
+
+from langchain_google_vertexai import ChatVertexAI
+
+from langchain_anthropic import ChatAnthropic
+
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_core.documents import Document
 
@@ -13,7 +19,9 @@ from api.models import ChatsHistory, ModelSettings
 from api.db_templates import end_conference, start_conference
 
 env = environ.Env(
-    OPENAI_API_KEY=str
+    OPENAI_API_KEY=str,
+    ANTHROPIC_API_KEY=str,
+    GOOGLE_API_KEY=str
 )
 
 embeddings = OpenAIEmbeddings()
@@ -60,7 +68,7 @@ def send_question_to_llm(question, chat_id, customer_id=None):
     number_of_qa_history = model_settings.number_of_QA_history
     number_of_chunks = model_settings.number_of_chunks
 
-    llm = ChatOpenAI(model=model_name, temperature=model_temperature, openai_api_key=env('OPENAI_API_KEY'))
+    llm = create_llm(model_name, model_temperature)
 
     customer_vectorstore = FAISS.load_local("db/customers_contexts", embeddings,
                                             allow_dangerous_deserialization=True)
@@ -104,16 +112,34 @@ def send_question_to_llm(question, chat_id, customer_id=None):
     return answer, chat_history, response
 
 
-def clean_text(context):
+def clean_text(context, metadata):
     cleaned_text = re.sub(r'\u200e', '', context)
     cleaned_text = re.sub(r'(\r\n)+', '\r\n', cleaned_text)
     cleaned_text = re.sub(r'_{3,}', '', cleaned_text)
+    if metadata["contact_id"]:
+        cleaned_text = cleaned_text.replace('\\', '')
+        cleaned_text = cleaned_text.replace('"', '')
 
     return cleaned_text
 
 
 def create_document(context, metadata, is_decorated=False):
-    cleaned_text = clean_text(context)
+    cleaned_text = clean_text(context, metadata)
     if is_decorated:
         cleaned_text = start_conference + cleaned_text + end_conference
     return [Document(page_content=cleaned_text, metadata=metadata)]
+
+
+def create_llm(model_name, model_temperature, project_id=None):
+    if model_name in ['gpt-3.5-turbo', 'gpt-4', 'gpt-4-turbo']:
+        return ChatOpenAI(model=model_name, temperature=model_temperature)
+    elif model_name == 'gemini-pro':
+        return ChatVertexAI(
+            model=model_name,
+            temperature=model_temperature,
+            project=project_id
+        )
+    elif model_name == 'claude-3-haiku-20240307':
+        return ChatAnthropic(model=model_name, temperature=model_temperature)
+    else:
+        raise ValueError(f"Unsupported model name: {model_name}")

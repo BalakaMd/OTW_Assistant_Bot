@@ -44,6 +44,8 @@ class ModelSettings(models.Model):
         ('gpt-3.5-turbo', 'GPT-3.5-turbo',),
         ('gpt-4o', 'GPT-4o'),
         ('gpt-4-turbo', 'GPT-4'),
+        ('gemini-pro', 'Gemini Pro'),
+        ('claude-3-haiku-20240307', 'Claude 3 Haiku'),
     ]
     settings_id = models.CharField(max_length=255, primary_key=True)
     model_name = models.CharField(max_length=255, choices=MODEL_CHOICES, unique=True, default='gpt-3.5-turbo')

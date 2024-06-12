@@ -4,18 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="71b75bc5-139e-470a-9ae9-d1b250c32349" name="Changes" comment="initial commit">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="71b75bc5-139e-470a-9ae9-d1b250c32349" name="Changes" comment="9.06">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OTW_Assistant_Bot/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/OTW_Assistant_Bot/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OTW_Assistant_Bot/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/OTW_Assistant_Bot/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/admin.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/serializers.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/useful_tools.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/useful_tools.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/customers_contexts/index.faiss" beforeDir="false" afterPath="$PROJECT_DIR$/db/customers_contexts/index.faiss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/customers_contexts/index.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/db/customers_contexts/index.pkl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/contacts/index.faiss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/contacts/index.pkl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/customers_contexts/index.faiss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/customers_contexts/index.pkl" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -67,6 +66,9 @@
       <recent name="$PROJECT_DIR$/db" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/fixtures" />
+      <recent name="$PROJECT_DIR$/OTW_Assistant_Bot" />
       <recent name="$PROJECT_DIR$/api" />
     </key>
   </component>
@@ -130,6 +132,15 @@
       <workItem from="1717799662668" duration="640000" />
       <workItem from="1717831085071" duration="11865000" />
       <workItem from="1717913824716" duration="1011000" />
+      <workItem from="1717914841260" duration="8668000" />
+      <workItem from="1717954895143" duration="533000" />
+      <workItem from="1717955960079" duration="69000" />
+      <workItem from="1717956425163" duration="4000" />
+      <workItem from="1717957197187" duration="1105000" />
+      <workItem from="1718004590713" duration="639000" />
+      <workItem from="1718005337371" duration="10789000" />
+      <workItem from="1718043573031" duration="4178000" />
+      <workItem from="1718102698892" duration="2443000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <option name="closed" value="true" />
@@ -155,7 +166,23 @@
       <option name="project" value="LOCAL" />
       <updated>1717764592956</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="9.06">
+      <option name="closed" value="true" />
+      <created>1717914887960</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1717914887960</updated>
+    </task>
+    <task id="LOCAL-00005" summary="9.06">
+      <option name="closed" value="true" />
+      <created>1717914892667</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1717914892667</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -174,7 +201,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="initial commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="initial commit" />
+    <MESSAGE value="9.06" />
+    <option name="LAST_COMMIT_MESSAGE" value="9.06" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

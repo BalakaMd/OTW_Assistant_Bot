@@ -9,7 +9,7 @@ class ChatsHistoryAdmin(admin.ModelAdmin):
 
 @admin.register(CustomerContext)
 class CustomerContextAdmin(admin.ModelAdmin):
-    search_fields = ['contact_id', 'data', 'customer_name']
+    search_fields = ['customer_id', 'data', 'customer_name']
     readonly_fields = ('customer_id', 'data', 'customer_name')
 
 

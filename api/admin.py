@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import ChatsHistory, CustomerContext, Contact, ModelSettings
+
+from .models import ChatsHistory, Contact, CustomerContext, ModelSettings
 
 
 @admin.register(ChatsHistory)

@@ -1,12 +1,17 @@
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from .serializers import QuestionSerializer, AddDataSerializer, ContactSerializer
-from .models import CustomerContext, Contact
 import json
 
 from langchain_core.documents import Document
-from api.useful_tools import add_data_to_faiss, remove_data_from_faiss, send_question_to_llm, create_document
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
+from api.tools.llm import send_question_to_llm
+from api.tools.main_tools import (add_data_to_faiss, create_document,
+                                  remove_data_from_faiss)
+
+from .models import Contact, CustomerContext
+from .serializers import (AddDataSerializer, ContactSerializer,
+                          QuestionSerializer)
 
 
 class OpenAIView(APIView):

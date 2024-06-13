@@ -1,5 +1,6 @@
 from django.urls import path
-from .views import OpenAIView, CustomerDataView, ContactViewSet
+
+from .views import ContactViewSet, CustomerDataView, OpenAIView
 
 urlpatterns = [
     path('ask/', OpenAIView.as_view(), name='ask'),

@@ -1,9 +1,9 @@
-import re
-
 import requests
 from rest_framework import serializers
+
+from api.tools.main_tools import create_document
+
 from .models import ChatsHistory, Contact
-from api.useful_tools import create_document
 
 
 class MessageSerializer(serializers.ModelSerializer):

@@ -4,18 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="71b75bc5-139e-470a-9ae9-d1b250c32349" name="Changes" comment="9.06">
+    <list default="true" id="71b75bc5-139e-470a-9ae9-d1b250c32349" name="Changes" comment="12.06">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OTW_Assistant_Bot/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/OTW_Assistant_Bot/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/admin.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/useful_tools.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/useful_tools.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/contacts/index.faiss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/contacts/index.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/customers_contexts/index.faiss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/customers_contexts/index.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -141,6 +134,8 @@
       <workItem from="1718005337371" duration="10789000" />
       <workItem from="1718043573031" duration="4178000" />
       <workItem from="1718102698892" duration="2443000" />
+      <workItem from="1718202733438" duration="1058000" />
+      <workItem from="1718264768167" duration="5159000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <option name="closed" value="true" />
@@ -182,7 +177,15 @@
       <option name="project" value="LOCAL" />
       <updated>1717914892667</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="12.06">
+      <option name="closed" value="true" />
+      <created>1718203180498</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1718203180498</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -202,7 +205,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="initial commit" />
     <MESSAGE value="9.06" />
-    <option name="LAST_COMMIT_MESSAGE" value="9.06" />
+    <MESSAGE value="12.06" />
+    <option name="LAST_COMMIT_MESSAGE" value="12.06" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

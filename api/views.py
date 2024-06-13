@@ -20,14 +20,12 @@ class OpenAIView(APIView):
             question = serializer.validated_data['question']
             customer_id = serializer.validated_data['customer_id']
             try:
-                if customer_id:
-                    answer, chat_history, response = send_question_to_llm(question, chat_id, customer_id)
-                else:
-                    answer, chat_history, response = send_question_to_llm(question, chat_id)
+                answer, chat_history, questions_asked, response = send_question_to_llm(question, chat_id, customer_id)
                 return Response({
                     'answer': answer,
+                    'questions_asked': questions_asked,
                     'chat_history': chat_history,
-                    'response': response,
+                    'llm_response': response,
                 }, status=status.HTTP_200_OK)
             except Exception as e:
                 return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -53,7 +51,7 @@ class CustomerDataView(APIView):
                     context.save()
 
                     # Add document to FAISS
-                    add_data_to_faiss(document, chunk_size=2000, chunk_overlap=200, path="db/customers_contexts",)
+                    add_data_to_faiss(document, chunk_size=2000, chunk_overlap=200, path="db/customers_contexts", )
 
                     return Response(f'Context was successfully created! Metadata: [customer_id: {customer_id}]',
                                     status=status.HTTP_201_CREATED)

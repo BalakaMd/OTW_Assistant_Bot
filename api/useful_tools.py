@@ -68,20 +68,26 @@ def send_question_to_llm(question, chat_id, customer_id=None):
     number_of_qa_history = model_settings.number_of_QA_history
     number_of_chunks = model_settings.number_of_chunks
 
-    llm = create_llm(model_name, model_temperature)
+    chat_history = []
+    whatsapp_chat_history = []
 
+    llm = create_llm(model_name=model_name, model_temperature=model_temperature)
+
+    # FAISS management
     customer_vectorstore = FAISS.load_local("db/customers_contexts", embeddings,
                                             allow_dangerous_deserialization=True)
     contacts_vectorstore = FAISS.load_local("db/contacts", embeddings, allow_dangerous_deserialization=True)
     customer_vectorstore.merge_from(contacts_vectorstore)
 
     search_kwargs = {"k": number_of_chunks, 'score_threshold': 0.6}
-    if customer_id:
-        search_kwargs["filter"] = {"customer_id": customer_id}
 
-    chat_history = []
-
+    # Current chat history management
     user_messages, created = ChatsHistory.objects.get_or_create(chat_id=chat_id)
+
+    if customer_id > 0:
+        # search_kwargs["filter"] = {"customer_id": customer_id}
+        whatsapp_chat_history = pull_data_from_crm(customer_id=customer_id)
+        user_messages.whatsapp_chat_history = whatsapp_chat_history
 
     for message in user_messages.messages:
         chat_history.append(("human", message['human']))
@@ -91,25 +97,29 @@ def send_question_to_llm(question, chat_id, customer_id=None):
         [
             ("system", system_prompt),
             ("placeholder", "{chat_history}"),
+            ("placeholder", "{whatsapp_chat_history}"),
             ("human", "{input}"),
         ]
     )
 
-    retriever = customer_vectorstore.as_retriever(query=question, search_type="similarity_score_threshold",
+    retriever = customer_vectorstore.as_retriever(query=question + str(chat_history),
+                                                  search_type="similarity_score_threshold",
                                                   search_kwargs=search_kwargs)
 
     question_answer_chain = create_stuff_documents_chain(llm, prompt)
     rag_chain = create_retrieval_chain(retriever, question_answer_chain)
     response = rag_chain.invoke({"input": question,
-                                 "chat_history": chat_history[-number_of_qa_history:]})
+                                 "chat_history": chat_history[-number_of_qa_history:],
+                                 "whatsapp_chat_history": whatsapp_chat_history})
     answer = response["answer"]
 
     user_messages.messages.append({'human': question, 'assistant': answer})
     user_messages.save()
 
     chat_history = user_messages.messages
+    questions_asked = f'{len(chat_history[-number_of_qa_history:])}/{number_of_qa_history}'
 
-    return answer, chat_history, response
+    return answer, chat_history, questions_asked, response
 
 
 def clean_text(context, metadata):
@@ -131,7 +141,7 @@ def create_document(context, metadata, is_decorated=False):
 
 
 def create_llm(model_name, model_temperature, project_id=None):
-    if model_name in ['gpt-3.5-turbo', 'gpt-4', 'gpt-4-turbo']:
+    if model_name in ['gpt-3.5-turbo', 'gpt-4o', 'gpt-4-turbo']:
         return ChatOpenAI(model=model_name, temperature=model_temperature)
     elif model_name == 'gemini-pro':
         return ChatVertexAI(
@@ -143,3 +153,7 @@ def create_llm(model_name, model_temperature, project_id=None):
         return ChatAnthropic(model=model_name, temperature=model_temperature)
     else:
         raise ValueError(f"Unsupported model name: {model_name}")
+
+
+def pull_data_from_crm(customer_id):
+    return ['Hello! Оливер Суцкин любит красное вино с сахаром']

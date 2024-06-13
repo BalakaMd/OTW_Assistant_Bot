@@ -4,6 +4,7 @@ from django.db import models
 class ChatsHistory(models.Model):
     chat_id = models.CharField(max_length=255, unique=True)
     messages = models.JSONField(default=list)
+    whatsapp_chat_history = models.TextField(default='', blank=True)
 
     class Meta:
         verbose_name_plural = 'chat histories'

@@ -28,7 +28,6 @@ def send_question_to_llm(question, chat_id, customer_id=None):
     number_of_chunks = model_settings.number_of_chunks
 
     chat_history = []
-    limited_chat_history = chat_history[-number_of_qa_history:]
     whatsapp_chat_history = []
 
     llm = create_llm(model_name=model_name, model_temperature=model_temperature)
@@ -63,6 +62,7 @@ def send_question_to_llm(question, chat_id, customer_id=None):
         ]
     )
 
+    limited_chat_history = chat_history[-number_of_qa_history:]
     retriever = customer_vectorstore.as_retriever(query=question + str(limited_chat_history),
                                                   search_type="similarity_score_threshold",
                                                   search_kwargs=search_kwargs)
@@ -78,7 +78,7 @@ def send_question_to_llm(question, chat_id, customer_id=None):
     user_messages.save()
 
     chat_history = user_messages.messages
-    questions_asked = f'{len(limited_chat_history)}/{number_of_qa_history}'
+    questions_asked = f'{limited_chat_history}/{number_of_qa_history}'
 
     return answer, chat_history, questions_asked, response
 

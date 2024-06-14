@@ -14,7 +14,10 @@ from .serializers import (AddDataSerializer, ContactSerializer,
                           QuestionSerializer)
 
 
-class OpenAIView(APIView):
+class OtwChatbotView(APIView):
+    def get_view_name(self):
+        return "OTW AI Chatbot"
+
     def post(self, request):
         chat_id = request.headers.get('ChatID')
         if not chat_id:

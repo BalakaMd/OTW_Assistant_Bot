@@ -47,7 +47,7 @@ def clean_text(context, metadata):
     cleaned_text = re.sub(r'\u200e', '', context)
     cleaned_text = re.sub(r'(\r\n)+', '\r\n', cleaned_text)
     cleaned_text = re.sub(r'_{3,}', '', cleaned_text)
-    if metadata["contact_id"]:
+    if metadata.get('contact_id'):
         cleaned_text = cleaned_text.replace('\\', '')
         cleaned_text = cleaned_text.replace('"', '')
 

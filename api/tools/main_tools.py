@@ -10,7 +10,7 @@ from api.tools.db_templates import end_conference, start_conference
 embeddings = OpenAIEmbeddings()
 
 
-def add_data_to_faiss(document, chunk_size=500, chunk_overlap=100, path="db/customers_contexts"):
+def add_data_to_faiss(document, chunk_size, chunk_overlap=100, path="db/customers_contexts"):
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap,
                                                    add_start_index=True)
     docs = text_splitter.split_documents(document)

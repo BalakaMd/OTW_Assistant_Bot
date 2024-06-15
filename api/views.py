@@ -54,12 +54,12 @@ class CustomerDataView(APIView):
                 try:
                     # Add context to database
                     context, created = CustomerContext.objects.get_or_create(customer_id=customer_id)
-                    context.data.append({'context': f'Start of the conference {document[0].page_content} '})
+                    context.data.append({'context': document[0].page_content})
                     context.customer_name = customer_name
                     context.save()
 
                     # Add document to FAISS
-                    add_data_to_faiss(document, chunk_size=2000, chunk_overlap=200, path="db/customers_contexts", )
+                    add_data_to_faiss(document, chunk_size=4000, chunk_overlap=200, path="db/customers_contexts", )
 
                     return Response(f'Context was successfully created! Metadata: [customer_id: {customer_id}]',
                                     status=status.HTTP_201_CREATED)

@@ -78,7 +78,7 @@ def send_question_to_llm(question, chat_id, customer_id=None):
     user_messages.save()
 
     chat_history = user_messages.messages
-    questions_asked = f'{limited_chat_history}/{number_of_qa_history}'
+    questions_asked = f'{len(limited_chat_history)}/{number_of_qa_history}'
 
     return answer, chat_history, questions_asked, response
 

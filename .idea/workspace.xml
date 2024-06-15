@@ -4,12 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="71b75bc5-139e-470a-9ae9-d1b250c32349" name="Changes" comment="- 13.06&#10;- Organized and cleaned up imports using isort&#10;- Improved code structure and formatting">
+    <list default="true" id="71b75bc5-139e-470a-9ae9-d1b250c32349" name="Changes" comment="- 14.06&#10;- fixed variable limited_chat_history">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/tools/llm.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/tools/llm.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/tools/main_tools.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/tools/main_tools.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fixtures/Contacts.json" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,9 +59,9 @@
       <recent name="$PROJECT_DIR$/db" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/fixtures" />
       <recent name="$PROJECT_DIR$/api/tools" />
       <recent name="$PROJECT_DIR$" />
-      <recent name="$PROJECT_DIR$/fixtures" />
       <recent name="$PROJECT_DIR$/OTW_Assistant_Bot" />
       <recent name="$PROJECT_DIR$/api" />
     </key>
@@ -140,7 +139,13 @@
       <workItem from="1718264768167" duration="8099000" />
       <workItem from="1718277863970" duration="1255000" />
       <workItem from="1718365968967" duration="3503000" />
-      <workItem from="1718377315062" duration="1955000" />
+      <workItem from="1718377315062" duration="3720000" />
+      <workItem from="1718392969999" duration="49000" />
+      <workItem from="1718394964420" duration="10000" />
+      <workItem from="1718394983527" duration="758000" />
+      <workItem from="1718395812124" duration="2404000" />
+      <workItem from="1718477963240" duration="1448000" />
+      <workItem from="1718480611107" duration="5000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <option name="closed" value="true" />
@@ -206,7 +211,23 @@
       <option name="project" value="LOCAL" />
       <updated>1718274933722</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="- 14.06&#10;-the response from the server has been changed&#10;- fixed bug when adding context&#10;-new FAISS databases were created and new fixtures were made">
+      <option name="closed" value="true" />
+      <created>1718389773519</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1718389773519</updated>
+    </task>
+    <task id="LOCAL-00010" summary="- 14.06&#10;- fixed variable limited_chat_history">
+      <option name="closed" value="true" />
+      <created>1718389949647</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1718389949647</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -229,7 +250,9 @@
     <MESSAGE value="12.06" />
     <MESSAGE value="13.06" />
     <MESSAGE value="- 13.06&#10;- Organized and cleaned up imports using isort&#10;- Improved code structure and formatting" />
-    <option name="LAST_COMMIT_MESSAGE" value="- 13.06&#10;- Organized and cleaned up imports using isort&#10;- Improved code structure and formatting" />
+    <MESSAGE value="- 14.06&#10;-the response from the server has been changed&#10;- fixed bug when adding context&#10;-new FAISS databases were created and new fixtures were made" />
+    <MESSAGE value="- 14.06&#10;- fixed variable limited_chat_history" />
+    <option name="LAST_COMMIT_MESSAGE" value="- 14.06&#10;- fixed variable limited_chat_history" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

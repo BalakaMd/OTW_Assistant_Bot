@@ -1,13 +1,12 @@
 import json
 
-from langchain_core.documents import Document
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from api.tools.llm import send_question_to_llm
 from api.tools.main_tools import (add_data_to_faiss, create_document,
-                                  remove_data_from_faiss)
+                                  remove_data_from_faiss, update_meetings)
 
 from .models import Contact, CustomerContext
 from .serializers import (AddDataSerializer, ContactSerializer,
@@ -19,12 +18,9 @@ class OtwChatbotView(APIView):
         return "OTW AI Chatbot"
 
     def post(self, request):
-        chat_id = request.headers.get('ChatID')
-        if not chat_id:
-            return Response({'error': 'ChatID is missing in headers.'}, status=status.HTTP_400_BAD_REQUEST)
-
         serializer = QuestionSerializer(data=request.data)
         if serializer.is_valid():
+            chat_id = serializer.validated_data['chat_id']
             question = serializer.validated_data['question']
             customer_id = serializer.validated_data['customer_id']
             try:
@@ -44,45 +40,41 @@ class CustomerDataView(APIView):
     def post(self, request):
         serializer = AddDataSerializer(data=request.data)
         if serializer.is_valid():
-            customer_id = serializer.validated_data['customer_id']
-            customer_name = serializer.validated_data['customer_name']
-            document = serializer.save()
-            if not isinstance(document[0], Document):
-                return Response({'error': f'Code: {document}. Incorrect URL or no access to the file.'},
-                                status=status.HTTP_400_BAD_REQUEST)
-            else:
-                try:
-                    # Add context to database
-                    context, created = CustomerContext.objects.get_or_create(customer_id=customer_id)
-                    context.data.append({'context': document[0].page_content})
-                    context.customer_name = customer_name
-                    context.save()
+            context_title = serializer.validated_data['title']
+            try:
+                # Add context to database
+                serializer.create(serializer.data)
+                context_id = CustomerContext.objects.last().id
 
-                    # Add document to FAISS
-                    add_data_to_faiss(document, chunk_size=4000, chunk_overlap=200, path="db/customers_contexts", )
+                document = serializer.save(context_id)
 
-                    return Response(f'Context was successfully created! Metadata: [customer_id: {customer_id}]',
-                                    status=status.HTTP_201_CREATED)
-                except Exception as e:
-                    return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                # Update meetings
+                update_meetings()
+
+                # Add document to FAISS
+                add_data_to_faiss(document, chunk_size=4000, chunk_overlap=200, path="db/customers_contexts", )
+
+                return Response(
+                    f'Context was successfully created! Metadata: [Title: {context_title}, Context ID: {context_id}].',
+                    status=status.HTTP_201_CREATED)
+            except Exception as e:
+                return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request):
-        customer_id = request.query_params.get('customer_id')
-        if not customer_id:
-            return Response({'error': 'Parameter customer_id is missing.'}, status=status.HTTP_400_BAD_REQUEST)
+        context_id = request.query_params.get('context_id')
+        if not context_id:
+            return Response({'error': 'Parameter context_id is missing.'}, status=status.HTTP_400_BAD_REQUEST)
         try:
-            # Find the context and delete it
-            context = CustomerContext.objects.get(customer_id=customer_id)
+            context = CustomerContext.objects.get(id=context_id)
             context.delete()
 
-            # Assuming you need to remove data from FAISS as well
-            remove_data_from_faiss(customer_id, metadata_tag="customer_id", path="db/customers_contexts")
+            remove_data_from_faiss(context_id, metadata_tag="context_id", path="db/customers_contexts")
 
-            return Response(f'Context with customer_id: {customer_id} was successfully deleted.',
+            return Response(f'Context with context_id: {context_id} was successfully deleted.',
                             status=status.HTTP_200_OK)
         except CustomerContext.DoesNotExist:
-            return Response({'error': f'Context with customer_id {customer_id} not found. Please check customer_id.'},
+            return Response({'error': f'Context with context_id {context_id} not found. Please check context_id.'},
                             status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -113,3 +105,21 @@ class ContactViewSet(APIView):
                 status=status.HTTP_200_OK if is_update else status.HTTP_201_CREATED
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request):
+        contact_id = request.query_params.get('contact_id')
+        if not contact_id:
+            return Response({'error': 'Parameter contact_id is missing.'}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            context = Contact.objects.get(contact_id=contact_id)
+            context.delete()
+
+            remove_data_from_faiss(contact_id, metadata_tag="contact_id", path="db/contacts")
+
+            return Response(f'Contact_id: {contact_id} was successfully deleted.',
+                            status=status.HTTP_200_OK)
+        except CustomerContext.DoesNotExist:
+            return Response({'error': f'Context with contact_id {contact_id} not found. Please check contact_id.'},
+                            status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

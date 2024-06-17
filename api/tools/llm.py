@@ -24,6 +24,7 @@ def send_question_to_llm(question, chat_id, customer_id=None):
     system_prompt = model_settings.system_prompt
     model_name = model_settings.model_name
     model_temperature = model_settings.temperature
+    score_threshold = model_settings.score_threshold
     number_of_qa_history = model_settings.number_of_QA_history
     number_of_chunks = model_settings.number_of_chunks
 
@@ -36,9 +37,13 @@ def send_question_to_llm(question, chat_id, customer_id=None):
     customer_vectorstore = FAISS.load_local("db/customers_contexts", embeddings,
                                             allow_dangerous_deserialization=True)
     contacts_vectorstore = FAISS.load_local("db/contacts", embeddings, allow_dangerous_deserialization=True)
-    customer_vectorstore.merge_from(contacts_vectorstore)
+    meetings_vectorstore = FAISS.load_local("db/meetings", embeddings, allow_dangerous_deserialization=True)
 
-    search_kwargs = {"k": number_of_chunks, 'score_threshold': 0.6}
+    # Merge FAISS
+    customer_vectorstore.merge_from(contacts_vectorstore)
+    customer_vectorstore.merge_from(meetings_vectorstore)
+
+    search_kwargs = {"k": number_of_chunks, 'score_threshold': score_threshold}
 
     # Current chat history management
     user_messages, created = ChatsHistory.objects.get_or_create(chat_id=chat_id)

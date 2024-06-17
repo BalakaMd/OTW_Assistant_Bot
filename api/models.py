@@ -14,12 +14,19 @@ class ChatsHistory(models.Model):
 
 
 class CustomerContext(models.Model):
-    customer_id = models.CharField(max_length=255)
-    customer_name = models.CharField(max_length=255, blank=True)
-    data = models.JSONField(default=list)
+    id = models.AutoField(primary_key=True)
+    title = models.CharField(max_length=255, blank=True)
+    date = models.DateTimeField(blank=True, null=True)
+    client_email_1 = models.EmailField(blank=True, null=True)
+    client_email_2 = models.EmailField(blank=True, null=True)
+    client_email_3 = models.EmailField(blank=True, null=True)
+    transcript_url = models.URLField(blank=True, null=True)
+    audio_url = models.URLField(blank=True, null=True)
+    video_url = models.URLField(blank=True, null=True)
+    transcript = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return f"Context for customer {self.customer_name}, Customer ID:{self.customer_id}"
+        return f"{self.title.upper()}, Customers emails: {self.client_email_1} {self.client_email_2} {self.client_email_3}"
 
 
 class Contact(models.Model):
@@ -52,6 +59,7 @@ class ModelSettings(models.Model):
     model_name = models.CharField(max_length=255, choices=MODEL_CHOICES, unique=True, default='gpt-3.5-turbo')
     system_prompt = models.TextField()
     number_of_chunks = models.IntegerField(default=5)
+    score_threshold = models.FloatField(default=0.6)
     number_of_QA_history = models.IntegerField(default=5)
     temperature = models.FloatField(default=0.5)
 

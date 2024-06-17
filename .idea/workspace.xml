@@ -4,10 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="71b75bc5-139e-470a-9ae9-d1b250c32349" name="Changes" comment="- 14.06&#10;- fixed variable limited_chat_history">
+    <list default="true" id="71b75bc5-139e-470a-9ae9-d1b250c32349" name="Changes" comment="- 15.06">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/tools/llm.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/tools/llm.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/serializers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/tools/db_templates.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/tools/db_templates.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/tools/main_tools.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/tools/main_tools.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -146,6 +150,10 @@
       <workItem from="1718395812124" duration="2404000" />
       <workItem from="1718477963240" duration="1448000" />
       <workItem from="1718480611107" duration="5000" />
+      <workItem from="1718480743802" duration="2142000" />
+      <workItem from="1718561797364" duration="7872000" />
+      <workItem from="1718607431164" duration="25000" />
+      <workItem from="1718611749715" duration="1592000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <option name="closed" value="true" />
@@ -227,7 +235,15 @@
       <option name="project" value="LOCAL" />
       <updated>1718389949647</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="- 15.06">
+      <option name="closed" value="true" />
+      <created>1718481897583</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1718481897583</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -252,7 +268,8 @@
     <MESSAGE value="- 13.06&#10;- Organized and cleaned up imports using isort&#10;- Improved code structure and formatting" />
     <MESSAGE value="- 14.06&#10;-the response from the server has been changed&#10;- fixed bug when adding context&#10;-new FAISS databases were created and new fixtures were made" />
     <MESSAGE value="- 14.06&#10;- fixed variable limited_chat_history" />
-    <option name="LAST_COMMIT_MESSAGE" value="- 14.06&#10;- fixed variable limited_chat_history" />
+    <MESSAGE value="- 15.06" />
+    <option name="LAST_COMMIT_MESSAGE" value="- 15.06" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

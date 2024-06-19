@@ -15,6 +15,7 @@ class ChatsHistory(models.Model):
 
 class CustomerContext(models.Model):
     id = models.AutoField(primary_key=True)
+    client_id = models.CharField(max_length=255, blank=True, null=True)
     title = models.CharField(max_length=255, blank=True)
     date = models.DateTimeField(blank=True, null=True)
     client_email_1 = models.EmailField(blank=True, null=True)
@@ -68,3 +69,14 @@ class ModelSettings(models.Model):
 
     class Meta:
         verbose_name_plural = 'LLM Settings'
+
+
+class Lead(models.Model):
+    name = models.CharField(max_length=255)
+    whatsapp_number = models.CharField(max_length=15)
+    email = models.EmailField()
+    lead_id = models.CharField(max_length=50, unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'Lead: {self.name}, Whatsapp Number: {self.whatsapp_number}.'

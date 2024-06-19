@@ -3,7 +3,7 @@ from langchain_core.documents import Document
 from langchain_openai import OpenAIEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
-from api.models import CustomerContext
+from api.models import CustomerContext, Contact
 from api.tools.db_templates import all_meetings
 
 embeddings = OpenAIEmbeddings()
@@ -91,3 +91,13 @@ def update_meetings():
     meeting_document = create_document(f'{all_meetings}{texts}', metadata={'meeting': "all_meetings"})
 
     add_data_to_faiss(meeting_document, chunk_size=10000, chunk_overlap=200, path="db/meetings", is_rewrite=True)
+
+
+def get_contact_id_by_emails(emails):
+    for email in emails:
+        try:
+            contact = Contact.objects.get(email=email)
+            return contact.contact_id
+        except Contact.DoesNotExist:
+            continue
+    return None

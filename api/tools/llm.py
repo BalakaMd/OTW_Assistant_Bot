@@ -19,7 +19,7 @@ env = environ.Env(
 embeddings = OpenAIEmbeddings()
 
 
-def send_question_to_llm(question, chat_id, customer_id=None):
+def send_question_to_llm(question, chat_id, client_id=None):
     model_settings = ModelSettings.objects.get(settings_id=1)
     system_prompt = model_settings.system_prompt
     model_name = model_settings.model_name
@@ -48,11 +48,11 @@ def send_question_to_llm(question, chat_id, customer_id=None):
     # Current chat history management
     user_messages, created = ChatsHistory.objects.get_or_create(chat_id=chat_id)
 
-    if customer_id > 0:
-        # search_kwargs["filter"] = {"customer_id": customer_id}
-        whatsapp_chat_history = pull_data_from_crm(customer_id=customer_id)
-        user_messages.whatsapp_chat_history = whatsapp_chat_history
-        user_messages.save()
+    if client_id > 0:
+        search_kwargs["filter"] = {"client_id": str(client_id)}
+        # whatsapp_chat_history = pull_data_from_crm(customer_id=client_id)
+        # user_messages.whatsapp_chat_history = whatsapp_chat_history
+        # user_messages.save()
 
     for message in user_messages.messages:
         chat_history.append(("human", message['human']))

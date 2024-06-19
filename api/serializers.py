@@ -1,9 +1,8 @@
 from datetime import datetime
 
-import requests
 from rest_framework import serializers
 
-from api.tools.main_tools import create_document
+from api.tools.main_tools import create_document, get_contact_id_by_emails
 from api.tools.db_templates import end_conference, start_conference
 
 from .models import ChatsHistory, Contact, CustomerContext
@@ -37,10 +36,15 @@ class AddDataSerializer(serializers.Serializer):
     transcript = serializers.CharField(required=False, allow_blank=True)
 
     def save(self, context_id):
+        client_email_1 = self.validated_data.get('client_email_1', '')
+        client_email_2 = self.validated_data.get('client_email_2', '')
+        client_email_3 = self.validated_data.get('client_email_3', '')
+        client_id = get_contact_id_by_emails([client_email_1, client_email_2, client_email_3])
         metadata = {
             'context_id': context_id,
             'title': self.validated_data.get('title', ''),
             'date': self.validated_data.get('date', datetime.now()),
+            'client_id': client_id,
             'client_email_1': self.validated_data.get('client_email_1', ''),
             'client_email_2': self.validated_data.get('client_email_2', ''),
             'client_email_3': self.validated_data.get('client_email_3', ''),
@@ -53,6 +57,7 @@ class AddDataSerializer(serializers.Serializer):
         content = (
             f"Title: {metadata['title']}\n"
             f"Date: {metadata['date']}\n"
+            f"Client ID: {metadata['client_id']}\n"
             f"Client Email 1: {metadata['client_email_1']}\n"
             f"Client Email 2: {metadata['client_email_2']}\n"
             f"Client Email 3: {metadata['client_email_3']}\n"
@@ -66,6 +71,10 @@ class AddDataSerializer(serializers.Serializer):
         return document
 
     def create(self, validated_data):
+        client_email_1 = self.validated_data.get('client_email_1', '')
+        client_email_2 = self.validated_data.get('client_email_2', '')
+        client_email_3 = self.validated_data.get('client_email_3', '')
+        validated_data['client_id'] = get_contact_id_by_emails([client_email_1, client_email_2, client_email_3])
         return CustomerContext.objects.create(**validated_data)
 
 

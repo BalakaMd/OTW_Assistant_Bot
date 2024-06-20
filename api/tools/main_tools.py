@@ -44,6 +44,7 @@ def remove_data_from_faiss(data_id, metadata_tag, path):
             vectorstore.save_local(path)
             print(f"Data with ID {data_id} removed from FAISS index.")
         print("Number of vectors after removing data from FAISS:", vectorstore.index.ntotal)
+        return f"Number of vectors after removing data from FAISS: {vectorstore.index.ntotal}"
     except Exception as e:
         print(f"Error occurred while removing data for customer_id: {data_id} from FAISS:", str(e))
 

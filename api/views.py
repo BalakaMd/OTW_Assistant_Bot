@@ -69,9 +69,10 @@ class CustomerDataView(APIView):
             context = CustomerContext.objects.get(id=context_id)
             context.delete()
 
-            remove_data_from_faiss(context_id, metadata_tag="context_id", path="db/customers_contexts")
+            response_from_faiss = remove_data_from_faiss(context_id, metadata_tag="context_id",
+                                                         path="db/customers_contexts")
 
-            return Response(f'Context with context_id: {context_id} was successfully deleted.',
+            return Response(f'Context with context_id: {context_id} was successfully deleted. {response_from_faiss}',
                             status=status.HTTP_200_OK)
         except CustomerContext.DoesNotExist:
             return Response({'error': f'Context with context_id {context_id} not found. Please check context_id.'},

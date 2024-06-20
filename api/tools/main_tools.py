@@ -3,7 +3,7 @@ from langchain_core.documents import Document
 from langchain_openai import OpenAIEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
-from api.models import CustomerContext, Contact
+from api.models import CustomerContext, Contact, Lead
 from api.tools.db_templates import all_meetings
 
 embeddings = OpenAIEmbeddings()
@@ -99,5 +99,9 @@ def get_contact_id_by_emails(emails):
             contact = Contact.objects.get(email=email)
             return contact.contact_id
         except Contact.DoesNotExist:
-            continue
+            try:
+                lead = Lead.objects.get(email=email)
+                return lead.lead_id
+            except Lead.DoesNotExist:
+                continue
     return None

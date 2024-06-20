@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import ChatsHistory, Contact, CustomerContext, ModelSettings
+from .models import ChatsHistory, Contact, CustomerContext, ModelSettings, Lead
 
 
 @admin.register(ChatsHistory)
@@ -26,4 +26,10 @@ class ContactAdmin(admin.ModelAdmin):
 
 @admin.register(ModelSettings)
 class ModelSettingsAdmin(admin.ModelAdmin):
-    search_fields = ('model_name',)
+    search_fields = ['model_name']
+
+
+@admin.register(Lead)
+class LeadAdmin(admin.ModelAdmin):
+    search_fields = ['name', 'email', 'whatsapp_number', 'lead_id']
+    readonly_fields = ['name', 'whatsapp_number', 'email', 'lead_id', 'created_at']

@@ -50,9 +50,10 @@ def send_question_to_llm(question, chat_id, client_id=None):
 
     if client_id > 0:
         search_kwargs["filter"] = {"client_id": str(client_id)}
-        # whatsapp_chat_history = pull_data_from_crm(customer_id=client_id)
-        # user_messages.whatsapp_chat_history = whatsapp_chat_history
-        # user_messages.save()
+        whatsapp_chat_history.append(f'Client ID: {client_id}')
+        # whatsapp_chat_history.append(f'Whatsapp chat history: {pull_data_from_crm(customer_id=client_id)}')
+        user_messages.whatsapp_chat_history = whatsapp_chat_history
+        user_messages.save()
 
     for message in user_messages.messages:
         chat_history.append(("human", message['human']))

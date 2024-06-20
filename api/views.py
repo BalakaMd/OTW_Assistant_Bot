@@ -1,6 +1,6 @@
 import json
 
-from rest_framework import status
+from rest_framework import status, generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -8,9 +8,9 @@ from api.tools.llm import send_question_to_llm
 from api.tools.main_tools import (add_data_to_faiss, create_document,
                                   remove_data_from_faiss, update_meetings)
 
-from .models import Contact, CustomerContext
+from .models import Contact, CustomerContext, Lead
 from .serializers import (AddDataSerializer, ContactSerializer,
-                          QuestionSerializer)
+                          QuestionSerializer, LeadSerializer)
 
 
 class OtwChatbotView(APIView):
@@ -123,3 +123,8 @@ class ContactViewSet(APIView):
                             status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class LeadCreateView(generics.CreateAPIView):
+    queryset = Lead.objects.all()
+    serializer_class = LeadSerializer

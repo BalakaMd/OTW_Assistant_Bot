@@ -5,7 +5,7 @@ from rest_framework import serializers
 from api.tools.main_tools import create_document, get_contact_id_by_emails
 from api.tools.db_templates import end_conference, start_conference
 
-from .models import ChatsHistory, Contact, CustomerContext
+from .models import ChatsHistory, Contact, CustomerContext, Lead
 
 
 class MessageSerializer(serializers.ModelSerializer):
@@ -107,3 +107,9 @@ class ContactSerializer(serializers.ModelSerializer):
         instance.client_type = validated_data.get('client_type', instance.client_type)
         instance.save()
         return instance
+
+
+class LeadSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Lead
+        fields = '__all__'

@@ -4,13 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="71b75bc5-139e-470a-9ae9-d1b250c32349" name="Changes" comment="- 17.06">
+    <list default="true" id="71b75bc5-139e-470a-9ae9-d1b250c32349" name="Changes" comment="- 19.06">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/serializers.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/tools/llm.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/tools/llm.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/tools/main_tools.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/tools/main_tools.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -154,7 +155,8 @@
       <workItem from="1718611749715" duration="7455000" />
       <workItem from="1718703146256" duration="1376000" />
       <workItem from="1718733927700" duration="6851000" />
-      <workItem from="1718783116802" duration="1582000" />
+      <workItem from="1718783116802" duration="6601000" />
+      <workItem from="1718820900716" duration="4000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <option name="closed" value="true" />
@@ -252,7 +254,15 @@
       <option name="project" value="LOCAL" />
       <updated>1718646729588</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="- 19.06">
+      <option name="closed" value="true" />
+      <created>1718786704358</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1718786704358</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -279,7 +289,8 @@
     <MESSAGE value="- 14.06&#10;- fixed variable limited_chat_history" />
     <MESSAGE value="- 15.06" />
     <MESSAGE value="- 17.06" />
-    <option name="LAST_COMMIT_MESSAGE" value="- 17.06" />
+    <MESSAGE value="- 19.06" />
+    <option name="LAST_COMMIT_MESSAGE" value="- 19.06" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -1,35 +1,14 @@
+from textwrap import dedent
+
 from langchain_community.vectorstores import FAISS
 from langchain_core.documents import Document
 from langchain_openai import OpenAIEmbeddings
-from langchain_text_splitters import RecursiveCharacterTextSplitter
 
+from api.tasks import add_data_to_faiss
 from api.models import CustomerContext, Contact, Lead
 from api.tools.db_templates import all_meetings
 
 embeddings = OpenAIEmbeddings()
-
-
-def add_data_to_faiss(document, chunk_size, chunk_overlap, path="db/customers_contexts", is_rewrite=False):
-    text_splitter = RecursiveCharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap,
-                                                   separators=["\n\n", "\n", " ", ""],
-                                                   add_start_index=True)
-    docs = text_splitter.split_documents(document)
-    if is_rewrite:
-        vectorstore = FAISS.from_documents(docs, embeddings)
-        vectorstore.save_local(path)
-        print("Number of vectors after rewriting data in FAISS: ", vectorstore.index.ntotal)
-    else:
-        temporary_db = FAISS.from_documents(docs, embeddings)
-        try:
-            old_db = FAISS.load_local(path, embeddings, allow_dangerous_deserialization=True)
-            old_db.merge_from(temporary_db)
-            old_db.save_local(path)
-            print("Number of vectors after adding data to FAISS: ", old_db.index.ntotal)
-
-        except RuntimeError:
-            temporary_db.save_local(path)
-            print(f"New FAISS DB was created. Path: {path}")
-            print("Number of vectors after adding data to FAISS::", temporary_db.index.ntotal)
 
 
 def remove_data_from_faiss(data_id, metadata_tag, path):
@@ -91,18 +70,7 @@ def update_meetings():
 
     meeting_document = create_document(f'{all_meetings}{texts}', metadata={'meeting': "all_meetings"})
 
-    add_data_to_faiss(meeting_document, chunk_size=10000, chunk_overlap=200, path="db/meetings", is_rewrite=True)
+    add_data_to_faiss(document=meeting_document, chunk_size=10000, chunk_overlap=200, path="db/meetings",
+                      is_rewrite=True)
 
 
-def get_contact_id_by_emails(emails):
-    for email in emails:
-        try:
-            contact = Contact.objects.get(email=email)
-            return contact.contact_id
-        except Contact.DoesNotExist:
-            try:
-                lead = Lead.objects.get(email=email)
-                return lead.lead_id
-            except Lead.DoesNotExist:
-                continue
-    return None

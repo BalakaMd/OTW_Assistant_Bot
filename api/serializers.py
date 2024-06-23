@@ -2,9 +2,6 @@ from datetime import datetime
 
 from rest_framework import serializers
 
-from api.tools.main_tools import create_document, get_contact_id_by_emails
-from api.tools.db_templates import end_conference, start_conference
-
 from .models import ChatsHistory, Contact, CustomerContext, Lead
 
 
@@ -35,46 +32,24 @@ class AddDataSerializer(serializers.Serializer):
     video_url = serializers.URLField(required=False)
     transcript = serializers.CharField(required=False, allow_blank=True)
 
-    def save(self, context_id):
-        client_email_1 = self.validated_data.get('client_email_1', '')
-        client_email_2 = self.validated_data.get('client_email_2', '')
-        client_email_3 = self.validated_data.get('client_email_3', '')
-        client_id = get_contact_id_by_emails([client_email_1, client_email_2, client_email_3])
-        metadata = {
-            'context_id': context_id,
-            'title': self.validated_data.get('title', ''),
-            'date': self.validated_data.get('date', datetime.now()),
-            'client_id': client_id,
-            'client_email_1': self.validated_data.get('client_email_1', ''),
-            'client_email_2': self.validated_data.get('client_email_2', ''),
-            'client_email_3': self.validated_data.get('client_email_3', ''),
-            'transcript_url': self.validated_data.get('transcript_url', ''),
-            'audio_url': self.validated_data.get('audio_url', ''),
-            'video_url': self.validated_data.get('video_url', ''),
-        }
-        transcript = self.validated_data.get('transcript', '')
-
-        content = (
-            f"Title: {metadata['title']}\n"
-            f"Date: {metadata['date']}\n"
-            f"Client ID: {metadata['client_id']}\n"
-            f"Client Email 1: {metadata['client_email_1']}\n"
-            f"Client Email 2: {metadata['client_email_2']}\n"
-            f"Client Email 3: {metadata['client_email_3']}\n"
-            f"Transcript URL: {metadata['transcript_url']}\n"
-            f"Audio URL: {metadata['audio_url']}\n"
-            f"Video URL: {metadata['video_url']}\n"
-            f"Transcript: {start_conference}{transcript}{end_conference}\n"
-        )
-
-        document = create_document(content, metadata)
-        return document
+    def get_contact_id_by_emails(self, emails):
+        for email in emails:
+            try:
+                contact = Contact.objects.get(email=email)
+                return contact.contact_id
+            except Contact.DoesNotExist:
+                try:
+                    lead = Lead.objects.get(email=email)
+                    return lead.lead_id
+                except Lead.DoesNotExist:
+                    continue
+        return None
 
     def create(self, validated_data):
         client_email_1 = self.validated_data.get('client_email_1', '')
         client_email_2 = self.validated_data.get('client_email_2', '')
         client_email_3 = self.validated_data.get('client_email_3', '')
-        validated_data['client_id'] = get_contact_id_by_emails([client_email_1, client_email_2, client_email_3])
+        validated_data['client_id'] = self.get_contact_id_by_emails([client_email_1, client_email_2, client_email_3])
         return CustomerContext.objects.create(**validated_data)
 
 

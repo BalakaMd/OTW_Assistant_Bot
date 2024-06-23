@@ -4,8 +4,9 @@ from rest_framework import status, generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from api.tasks import add_data_to_faiss
 from api.tools.llm import send_question_to_llm
-from api.tools.main_tools import (add_data_to_faiss, create_document,
+from api.tools.main_tools import (create_document,
                                   remove_data_from_faiss, update_meetings)
 
 from .models import Contact, CustomerContext, Lead
@@ -46,13 +47,12 @@ class CustomerDataView(APIView):
                 serializer.create(serializer.data)
                 context_id = CustomerContext.objects.last().id
 
-                document = serializer.save(context_id)
-
                 # Update meetings
                 update_meetings()
 
                 # Add document to FAISS
-                add_data_to_faiss(document, chunk_size=4000, chunk_overlap=200, path="db/customers_contexts", )
+                add_data_to_faiss.delay(context_id=context_id, chunk_size=5000, chunk_overlap=200,
+                                        path="db/customers_contexts")
 
                 return Response(
                     f'Context was successfully created! Metadata: [Title: {context_title}, Context ID: {context_id}].',
@@ -96,10 +96,11 @@ class ContactViewSet(APIView):
 
         if serializer.is_valid():
             serializer.save()
-            metadata = {'contact_id': serializer.data['contact_id']}
+            metadata = {'contact_id': serializer.data['contact_id'],
+                        'client_id': str(serializer.data['contact_id'])}
             document_context = json.dumps(serializer.data)
             document = create_document(document_context, metadata)
-            add_data_to_faiss(document, chunk_size=700, chunk_overlap=100, path="db/contacts")
+            add_data_to_faiss(document=document, chunk_size=700, chunk_overlap=100, path="db/contacts")
 
             return Response(
                 f'Contacts have been successfully {"updated" if is_update else "created"}! {serializer.data}',

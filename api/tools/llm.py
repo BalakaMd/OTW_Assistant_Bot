@@ -1,3 +1,5 @@
+from textwrap import dedent
+
 import environ
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain.chains.retrieval import create_retrieval_chain
@@ -6,9 +8,9 @@ from langchain_community.vectorstores import FAISS
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_google_vertexai import ChatVertexAI
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
+from openai import OpenAI
 
 from api.models import ChatsHistory, ModelSettings
-from api.tools.main_tools import pull_data_from_crm
 
 env = environ.Env(
     OPENAI_API_KEY=str,
@@ -69,7 +71,7 @@ def send_question_to_llm(question, chat_id, client_id=None):
     )
 
     limited_chat_history = chat_history[-number_of_qa_history:]
-    retriever = customer_vectorstore.as_retriever(query=question + str(limited_chat_history),
+    retriever = customer_vectorstore.as_retriever(query=question,
                                                   search_type="similarity_score_threshold",
                                                   search_kwargs=search_kwargs)
 
@@ -102,3 +104,5 @@ def create_llm(model_name, model_temperature, project_id=None):
         return ChatAnthropic(model=model_name, temperature=model_temperature)
     else:
         raise ValueError(f"Unsupported model name: {model_name}")
+
+

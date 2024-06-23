@@ -17,3 +17,4 @@ langchain-anthropic==0.1.15
 psycopg2.binary==2.9.9
 
 requests~=2.32.3
+aiohttp~=3.9.5

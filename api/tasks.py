@@ -139,6 +139,6 @@ def get_contact_id_by_emails(emails):
                 return lead.lead_id
             except Lead.DoesNotExist:
                 continue
-    return None
+    return ''
 
 

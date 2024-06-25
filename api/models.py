@@ -36,7 +36,7 @@ class Contact(models.Model):
     email = models.EmailField(blank=True, null=True)
     drive_folder_id = models.CharField(max_length=255, blank=True, null=True)
     related_accounts = models.CharField(max_length=255, blank=True, null=True)
-    related_deal = models.CharField(max_length=255, blank=True, null=True)
+    related_deal = models.TextField(blank=True, null=True)
     design_hourly_rate = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     development_hourly_rate = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     marketing = models.CharField(max_length=255, blank=True, null=True)

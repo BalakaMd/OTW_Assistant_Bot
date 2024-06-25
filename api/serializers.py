@@ -43,7 +43,7 @@ class AddDataSerializer(serializers.Serializer):
                     return lead.lead_id
                 except Lead.DoesNotExist:
                     continue
-        return None
+        return ''
 
     def create(self, validated_data):
         client_email_1 = self.validated_data.get('client_email_1', '')

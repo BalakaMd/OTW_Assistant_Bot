@@ -21,9 +21,9 @@ class CustomerContext(models.Model):
     client_email_1 = models.EmailField(blank=True, null=True)
     client_email_2 = models.EmailField(blank=True, null=True)
     client_email_3 = models.EmailField(blank=True, null=True)
-    transcript_url = models.URLField(blank=True, null=True)
-    audio_url = models.URLField(blank=True, null=True)
-    video_url = models.URLField(blank=True, null=True)
+    transcript_url = models.TextField(blank=True, null=True)
+    audio_url = models.TextField(blank=True, null=True)
+    video_url = models.TextField(blank=True, null=True)
     transcript = models.TextField(blank=True, null=True)
 
     def __str__(self):

@@ -24,12 +24,12 @@ class AddDataSerializer(serializers.Serializer):
 
     title = serializers.CharField(max_length=255, required=False)
     date = serializers.DateTimeField(required=False)
-    client_email_1 = serializers.EmailField(required=False)
+    client_email_1 = serializers.EmailField(required=False, allow_blank=True)
     client_email_2 = serializers.EmailField(required=False, allow_blank=True)
     client_email_3 = serializers.EmailField(required=False, allow_blank=True)
-    transcript_url = serializers.URLField(required=False)
-    audio_url = serializers.URLField(required=False)
-    video_url = serializers.URLField(required=False)
+    transcript_url = serializers.CharField(required=False, allow_blank=True)
+    audio_url = serializers.CharField(required=False, allow_blank=True)
+    video_url = serializers.CharField(required=False, allow_blank=True)
     transcript = serializers.CharField(required=False, allow_blank=True)
 
     def get_contact_id_by_emails(self, emails):
